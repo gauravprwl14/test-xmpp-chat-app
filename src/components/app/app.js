@@ -90,6 +90,49 @@ class App extends Component {
             </div>
           </div>
         </div>
+
+        <div className="row">
+          <div className="col-md-6">
+            <div id="rooms" className="panel panel-default">
+              <div className="panel-heading">Rooms</div>
+              <form name="rooms" className="panel-body">
+                <label htmlFor="room">room:</label>
+                <input type="text" id="room" value="" />
+                <input
+                  type="button"
+                  className="btn btn-primary"
+                  id="btnEnter"
+                  value="enter"
+                />
+                <input
+                  type="button"
+                  className="btn btn-danger"
+                  id="btnExit"
+                  value="exit"
+                />
+              </form>
+            </div>
+          </div>
+
+          <div id="presence" className="panel panel-default col-md-6">
+            <div className="panel-heading">Contacts and Status</div>
+            <form name="presence" className="panel-body">
+              <input
+                type="button"
+                className="btn btn-primary"
+                id="btnRoster"
+                value="get your contacts/Rooms(Roster)"
+              />
+              <input
+                type="button"
+                className="btn btn-warning"
+                id="btnAway"
+                value="set your status away"
+              />
+            </form>
+          </div>
+        </div>
+
         <div className="panel panel-default panel-heading">
           <strong>History:</strong>
           {AppStore.logsArray.map((logValue, index) => {

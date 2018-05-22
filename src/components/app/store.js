@@ -142,7 +142,7 @@ class AppStore {
    * @returns {boolean}
    */
   @action
-  onMessage = (msg) => {
+  onMessage = msg => {
     const to = msg.getAttribute("to");
     const from = msg.getAttribute("from");
     const type = msg.getAttribute("type");
@@ -160,14 +160,14 @@ class AppStore {
     }
     // If this would return false, this Handler would be terminated
     return true;
-  }
+  };
 
   /**
    * This only works if the Person is not in your Contact List
    * @param stanza
    * @returns {boolean}
    */
-  onSubscriptionRequest = (stanza) => {
+  onSubscriptionRequest = stanza => {
     if (stanza.getAttribute("type") === "subscribe") {
       var from = window.$(stanza).attr("from");
       this.logsArray.push("onSubscriptionRequest: from=" + from);
@@ -181,7 +181,7 @@ class AppStore {
       );
     }
     return true;
-  }
+  };
 
   @action
   updateClientConnectionObj(path, value) {
@@ -200,7 +200,7 @@ class AppStore {
   @action
   enterRoom(room) {
     room = room + "@conference." + this.clientServerConnectionObj.jid;
-    this.logsArray.push("Connecting to the room" + room);
+    this.logsArray.push("Connecting to the room " + room);
     console.log(
       "%c this.clientServerConnectionObj.jid, ",
       "background: lime; color: black",

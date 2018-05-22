@@ -201,24 +201,6 @@ class App extends Component {
               </form>
             </div>
           </div>
-
-          <div id="presence" className="panel panel-default col-md-6">
-            <div className="panel-heading">Contacts and Status</div>
-            <form name="presence" className="panel-body">
-              <input
-                type="button"
-                className="btn btn-primary"
-                id="btnRoster"
-                value="get your contacts/Rooms(Roster)"
-              />
-              <input
-                type="button"
-                className="btn btn-warning"
-                id="btnAway"
-                value="set your status away"
-              />
-            </form>
-          </div>
         </div>
 
         <div className="panel panel-default panel-heading">

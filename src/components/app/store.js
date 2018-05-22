@@ -10,6 +10,10 @@ class AppStore {
     fullId: ""
   };
 
+  @observable subscribePersonJid = "";
+
+  @observable msgForSubscriber = "";
+
   // if client is connected to server than show disconnect btn
   // otherwise show connect btn
   @observable isClientConnectedToServer = false;
@@ -138,7 +142,7 @@ class AppStore {
    * @returns {boolean}
    */
   @action
-  onMessage(msg) {
+  onMessage = (msg) => {
     const to = msg.getAttribute("to");
     const from = msg.getAttribute("from");
     const type = msg.getAttribute("type");
@@ -163,7 +167,7 @@ class AppStore {
    * @param stanza
    * @returns {boolean}
    */
-  onSubscriptionRequest(stanza) {
+  onSubscriptionRequest = (stanza) => {
     if (stanza.getAttribute("type") === "subscribe") {
       var from = window.$(stanza).attr("from");
       this.logsArray.push("onSubscriptionRequest: from=" + from);
@@ -243,6 +247,48 @@ class AppStore {
   };
   exitRoom(room) {
     this.logsArray.push("exitRoom: " + room);
+  }
+
+  @action
+  updateSubscriberJid(value) {
+    this.subscribePersonJid = value;
+  }
+  @action
+  updateMsgForSubscriber(value) {
+    this.msgForSubscriber = value;
+  }
+
+  @action
+  subscribePresence(jid) {
+    this.logsArray.push("subscribe Person: " + jid);
+    this.connection.send(
+      window.$pres({
+        to: jid,
+        type: "subscribe"
+      })
+    );
+  }
+  /**
+   * Function for Message Sending
+   * @param msg
+   */
+  @action
+  sendMessage(msg) {
+    // #to is the cssID of the HTML Formular. You need to enter the receiver here
+    // #jid is the JabberID of the transmitting user
+    // body is the content of the Message itself
+    this.logsArray.push(
+      "CHAT: Send a message to " + this.subscribePersonJid + ": " + msg
+    );
+    var m = window
+      .$msg({
+        to: this.subscribePersonJid,
+        from: this.clientServerConnectionObj.fullId,
+        type: "chat"
+      })
+      .c("body")
+      .t(msg);
+    this.connection.send(m);
   }
 }
 

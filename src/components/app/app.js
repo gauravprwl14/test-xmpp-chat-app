@@ -17,6 +17,12 @@ class App extends Component {
     this.handleServerDisconnection = this.handleServerDisconnection.bind(this);
     this.updateChatRoomName = this.updateChatRoomName.bind(this);
     this.handleChatRoomConnection = this.handleChatRoomConnection.bind(this);
+    this.updateSubscriberId = this.updateSubscriberId.bind(this);
+    this.updateMsgForSubscriber = this.updateMsgForSubscriber.bind(this);
+    this.handleSubscriberConnection = this.handleSubscriberConnection.bind(
+      this
+    );
+    this.sendMsgToSubscriber = this.sendMsgToSubscriber.bind(this);
   }
   componentDidMount() {
     AppStore.onAppInit();
@@ -45,7 +51,26 @@ class App extends Component {
     e.preventDefault();
     AppStore.enterRoom(AppStore.chatRoomName);
   }
-
+  updateSubscriberId(e) {
+    e.preventDefault();
+    const value = e.target.value;
+    AppStore.updateSubscriberJid(value);
+  }
+  updateMsgForSubscriber(e) {
+    e.preventDefault();
+    const value = e.target.value;
+    AppStore.updateMsgForSubscriber(value);
+  }
+  handleSubscriberConnection(e) {
+    e.preventDefault();
+    const subscriberJid = AppStore.subscribePersonJid;
+    AppStore.subscribePresence(subscriberJid);
+  }
+  sendMsgToSubscriber(e) {
+    e.preventDefault();
+    const msg = AppStore.msgForSubscriber;
+    AppStore.sendMessage(msg);
+  }
   render() {
     return (
       <div className="container">
@@ -100,6 +125,51 @@ class App extends Component {
                 />
               </form>
             </div>
+          </div>
+          <div id="chat" className="panel panel-default col-md-6">
+            <div className="panel-heading">Chat</div>
+            <form name="chat" className="panel-body">
+              <div className="form-group">
+                <label htmlFor="to">Person to interact with:</label>
+                <input
+                  type="text"
+                  id="to"
+                  onChange={this.updateSubscriberId}
+                  value={AppStore.subscribePersonJid}
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  type="button"
+                  className="btn btn-primary"
+                  id="btnSubPres"
+                  value="subscribe Person"
+                  onClick={this.handleSubscriberConnection}
+                />
+                {/* <input
+                  type="button"
+                  className="btn btn-primary"
+                  id="btnGetPres"
+                  value="get Status of Person (Person has to be subscribed)"
+                /> */}
+              </div>
+              <div className="form-group">
+                <label htmlFor="msg">Message:</label>
+                <input
+                  type="text"
+                  id="msg"
+                  value={AppStore.msgForSubscriber}
+                  onChange={this.updateMsgForSubscriber}
+                />
+              </div>
+              <input
+                type="button"
+                className="btn btn-success"
+                id="send"
+                value="send Message"
+                onClick={this.sendMsgToSubscriber}
+              />
+            </form>
           </div>
         </div>
 

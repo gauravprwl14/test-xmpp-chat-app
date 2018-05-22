@@ -199,7 +199,7 @@ class AppStore {
    */
   @action
   enterRoom(room) {
-    room = room + "@conference." + this.clientServerConnectionObj.jid;
+    room = room + ConstantsObject.conferenceServerUrl;
     this.logsArray.push("Connecting to the room " + room);
     console.log(
       "%c this.clientServerConnectionObj.jid, ",

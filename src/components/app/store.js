@@ -218,6 +218,23 @@ class AppStore {
       this.roomMsgHandler,
       this.roomPresHandler
     );
+    this.connection.muc.createInstantRoom(
+      room,
+      successResponse => {
+        console.log(
+          "%c successResponse ",
+          "background: lime; color: black",
+          successResponse
+        );
+      },
+      errorResponse => {
+        console.log(
+          "%c error",
+          "background: salmon; color: black",
+          errorResponse
+        );
+      }
+    );
   }
 
   // Function for Messages and Notifications inside Chatrooms

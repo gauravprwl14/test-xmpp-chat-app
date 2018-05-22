@@ -14,6 +14,8 @@ class AppStore {
   // otherwise show connect btn
   @observable isClientConnectedToServer = false;
 
+  @observable chatRoomName = "";
+
   @observable logsArray = [];
 
   @action
@@ -180,6 +182,67 @@ class AppStore {
   @action
   updateClientConnectionObj(path, value) {
     this.clientServerConnectionObj[path] = value;
+  }
+
+  @action
+  updateChatRoomName(value) {
+    this.chatRoomName = value;
+  }
+
+  /**
+   * Function for entering Chatrooms
+   * @param room
+   */
+  @action
+  enterRoom(room) {
+    room = room + "@conference." + this.clientServerConnectionObj.jid;
+    this.logsArray.push("Connecting to the room" + room);
+    console.log(
+      "%c this.clientServerConnectionObj.jid, ",
+      "background: lime; color: black",
+      this.clientServerConnectionObj.jid
+    );
+    const responseFromInitFunc = this.connection.muc.init(this.connection);
+    console.log(
+      "%c responseFromInitFunc ",
+      "background: lime; color: black",
+      responseFromInitFunc
+    );
+    this.connection.muc.join(
+      room,
+      this.clientServerConnectionObj.fullId,
+      this.roomMsgHandler,
+      this.roomPresHandler
+    );
+  }
+
+  // Function for Messages and Notifications inside Chatrooms
+  roomMsgHandler = (a, b, c) => {
+    this.logsArray.push("MUC: Subscribed to all Messages inside this Room");
+    console.log(
+      "%c inside roomMsgHandler",
+      "background: lime; color: black",
+      a,
+      b,
+      c
+    );
+    return true;
+  };
+  roomPresHandler = (a, b, c) => {
+    this.logsArray.push(
+      "MUC: Subscribed to all Status-Changes inside this Room"
+    );
+    console.log(
+      "%c inside roomPresHandler",
+      "background: lime; color: black",
+      a,
+      b,
+      c
+    );
+    return true;
+  };
+  exitRoom(room) {
+    this.logsArray.push("exitRoom: " + room);
   }
 }
 

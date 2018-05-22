@@ -15,6 +15,8 @@ class App extends Component {
     );
     this.handleServerConnection = this.handleServerConnection.bind(this);
     this.handleServerDisconnection = this.handleServerDisconnection.bind(this);
+    this.updateChatRoomName = this.updateChatRoomName.bind(this);
+    this.handleChatRoomConnection = this.handleChatRoomConnection.bind(this);
   }
   componentDidMount() {
     AppStore.onAppInit();
@@ -32,6 +34,16 @@ class App extends Component {
   handleServerDisconnection(e) {
     e.preventDefault();
     AppStore.handleServerDisconnection();
+  }
+
+  updateChatRoomName(e) {
+    e.preventDefault();
+    const value = e.target.value;
+    AppStore.updateChatRoomName(value);
+  }
+  handleChatRoomConnection(e) {
+    e.preventDefault();
+    AppStore.enterRoom(AppStore.chatRoomName);
   }
 
   render() {
@@ -97,12 +109,18 @@ class App extends Component {
               <div className="panel-heading">Rooms</div>
               <form name="rooms" className="panel-body">
                 <label htmlFor="room">room:</label>
-                <input type="text" id="room" value="" />
+                <input
+                  type="text"
+                  id="room"
+                  value={AppStore.chatRoomName}
+                  onChange={this.updateChatRoomName}
+                />
                 <input
                   type="button"
                   className="btn btn-primary"
                   id="btnEnter"
-                  value="enter"
+                  value="Enter"
+                  onClick={this.handleChatRoomConnection}
                 />
                 <input
                   type="button"

@@ -128,7 +128,7 @@ class AppStore {
   customRawInputFunc(data) {
     console.log(
       "%c received raw data ",
-      "background: lime; color: black",
+      "background: aqua; color: black",
       data
     );
   }
@@ -199,7 +199,7 @@ class AppStore {
    */
   @action
   enterRoom(room) {
-    room = room + '@' + ConstantsObject.conferenceServerUrl;
+    room = room + "@" + ConstantsObject.conferenceServerUrl;
     this.logsArray.push("Connecting to the room " + room);
     console.log(
       "%c this.clientServerConnectionObj.jid, ",

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 
+import RoomComponent from "./room";
+
 import AppStore from "./store";
 
 //styles
@@ -202,6 +204,8 @@ class App extends Component {
             </div>
           </div>
         </div>
+
+        <RoomComponent />
 
         <div className="panel panel-default panel-heading">
           <strong>History:</strong>

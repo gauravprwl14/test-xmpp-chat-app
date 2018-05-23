@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 
-import RoomComponent from "./room";
+import RoomComponent from "../room/";
 
 import AppStore from "./store";
 

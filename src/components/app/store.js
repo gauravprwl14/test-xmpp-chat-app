@@ -1,4 +1,6 @@
 import { observable, action, toJS } from "mobx";
+import { $build, $iq, $msg, $pres, Strophe, $ } from "strophe.js";
+import "strophejs-plugin-muc";
 import ConstantsObject from "../../utils/constants";
 
 class AppStore {
@@ -24,9 +26,7 @@ class AppStore {
 
   @action
   onAppInit() {
-    this.connection = new window.Strophe.Connection(
-      ConstantsObject.boshServerUrl
-    );
+    this.connection = new Strophe.Connection(ConstantsObject.boshServerUrl);
     this.connection.rawInput = this.customRawOutputFunc;
     this.connection.rawOutput = this.customRawOutputFunc;
     console.log("this.connection rawInput", this.connection.rawInput);
@@ -67,13 +67,13 @@ class AppStore {
       "background: lime; color: black",
       toJS(this.logsArray)
     );
-    if (status === window.Strophe.Status.CONNECTING) {
+    if (status === Strophe.Status.CONNECTING) {
       this.logsArray.push("Strophe is connecting.");
       console.log(
         "%c Strophe is connecting. ",
         "background: aqua; color: black"
       );
-    } else if (status === window.Strophe.Status.CONNFAIL) {
+    } else if (status === Strophe.Status.CONNFAIL) {
       // Error Message in case the XMPP Server cannot be connected
       alert(
         "A connection to the server is not possible, check variable BOSH SERVER URL configuartion"
@@ -81,14 +81,14 @@ class AppStore {
       this.logsArray.push(
         "Strophe is disconnecting. Connection to server failed."
       );
-    } else if (status === window.Strophe.Status.AUTHFAIL) {
+    } else if (status === Strophe.Status.AUTHFAIL) {
       // Error Message for wrong username or password
       alert("You entered a wrong username or password");
       this.logsArray.push(
         "Strophe failed to connect. Wrong username or password."
       );
       this.isClientConnectedToServer = false;
-    } else if (status === window.Strophe.Status.CONNECTED) {
+    } else if (status === Strophe.Status.CONNECTED) {
       console.log(
         "%c inside CONNECTED ",
         "background: lime; color: black",
@@ -99,7 +99,7 @@ class AppStore {
       this.clientServerConnectionObj.fullId = this.connection.jid;
       // Sending of Presence (status)
       // $pres Create a Strophe.Builder with a <presence/> element as the root.
-      this.connection.send(window.$pres());
+      this.connection.send($pres());
 
       // Set onMessage/onSubscriptionRequest Handler to receive Notifications (Messages and Contact Requests)
       this.connection.addHandler(
@@ -152,10 +152,7 @@ class AppStore {
     if (type === "chat" && elems.length > 0) {
       const body = elems[0];
       this.logsArray.push(
-        "CHAT: I got a message from " +
-          from +
-          ": " +
-          window.Strophe.getText(body)
+        "CHAT: I got a message from " + from + ": " + Strophe.getText(body)
       );
     }
     // If this would return false, this Handler would be terminated
@@ -169,12 +166,12 @@ class AppStore {
    */
   onSubscriptionRequest = stanza => {
     if (stanza.getAttribute("type") === "subscribe") {
-      var from = window.$(stanza).attr("from");
+      var from = $(stanza).attr("from");
       this.logsArray.push("onSubscriptionRequest: from=" + from);
       // Send a 'subscribed' notification back to accept the incoming
       // subscription request
       this.connection.send(
-        window.$pres({
+        $pres({
           to: from,
           type: "subscribed"
         })
@@ -279,7 +276,7 @@ class AppStore {
   subscribePresence(jid) {
     this.logsArray.push("subscribe Person: " + jid);
     this.connection.send(
-      window.$pres({
+      $pres({
         to: jid,
         type: "subscribe"
       })
@@ -297,12 +294,11 @@ class AppStore {
     this.logsArray.push(
       "CHAT: Send a message to " + this.subscribePersonJid + ": " + msg
     );
-    var m = window
-      .$msg({
-        to: this.subscribePersonJid,
-        from: this.clientServerConnectionObj.fullId,
-        type: "chat"
-      })
+    var m = $msg({
+      to: this.subscribePersonJid,
+      from: this.clientServerConnectionObj.fullId,
+      type: "chat"
+    })
       .c("body")
       .t(msg);
     this.connection.send(m);

@@ -150,6 +150,19 @@ class RoomStore {
       }
     );
   }
+
+  @action
+  sendMessage(roomJid, nickName = null, msg) {
+    AppStore.logsArray.push("CHAT: Send a message to " + roomJid + ": " + msg);
+    AppStore.connection.muc.message(roomJid, nickName, msg);
+  }
+  @action
+  sendGroupMessage(roomJid, msg) {
+    AppStore.logsArray.push(
+      "Group CHAT: Send a message to " + roomJid + ": " + msg
+    );
+    AppStore.connection.muc.groupchat(roomJid, msg);
+  }
 }
 
 export default new RoomStore();

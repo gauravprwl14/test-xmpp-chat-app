@@ -58,6 +58,7 @@ class Room extends Component {
                         <td>Room Name</td>
                         {/* <td>Members</td> */}
                         <td>Join</td>
+                        <td>Chat</td>
                       </tr>
                     </thead>
                     <tbody>
@@ -76,6 +77,16 @@ class Room extends Component {
                                 }
                               >
                                 join
+                              </Button>
+                            </td>
+                            <td>
+                              {" "}
+                              <Button
+                                onClick={e =>
+                                  this.handleRoomJoining(e, roomObj)
+                                }
+                              >
+                                CHAT
                               </Button>
                             </td>
                           </tr>

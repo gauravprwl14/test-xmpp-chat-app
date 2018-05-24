@@ -21,7 +21,7 @@ class Room extends Component {
     if (e) {
       e.preventDefault();
     }
-    RoomStore.enterRoom(roomObj);
+    RoomStore.enterRoom(roomObj.roomJid);
   }
   render() {
     return (

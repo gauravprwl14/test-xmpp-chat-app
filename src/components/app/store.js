@@ -1,9 +1,9 @@
 import { observable, action, toJS } from "mobx";
 import { $build, $iq, $msg, $pres, Strophe, $ } from "strophe.js";
-import abc from "strophejs-plugin-muc";
-import ConstantsObject from "../../utils/constants";
+import "strophejs-plugin-muc";
 
-console.log("%c abc or strophe muc  ", "background: aqua; color: black", abc);
+import RoomStore from "../room/store";
+import ConstantsObject from "../../utils/constants";
 
 class AppStore {
   @observable connection = null;
@@ -34,6 +34,7 @@ class AppStore {
       "background: aqua; color: black",
       this.connection
     );
+    this.connection.muc.init(this.connection);
     this.connection.rawInput = this.customRawOutputFunc;
     this.connection.rawOutput = this.customRawOutputFunc;
     console.log("this.connection rawInput", this.connection.rawInput);
@@ -197,75 +198,79 @@ class AppStore {
     this.chatRoomName = value;
   }
 
-  /**
-   * Function for entering Chatrooms
-   * @param room
-   */
   @action
   enterRoom(room) {
-    // room = room + "@" + ConstantsObject.conferenceServerUrl;
-    this.logsArray.push("Connecting to the room " + room);
-    console.log(
-      "%c this.clientServerConnectionObj.jid, ",
-      "background: lime; color: black",
-      this.clientServerConnectionObj.jid
-    );
-    const responseFromInitFunc = this.connection.muc.init(this.connection);
-    console.log(
-      "%c responseFromInitFunc ",
-      "background: lime; color: black",
-      responseFromInitFunc
-    );
-    this.connection.muc.join(
-      room,
-      this.clientServerConnectionObj.fullId,
-      this.roomMsgHandler,
-      this.roomPresHandler
-    );
-    this.connection.muc.createInstantRoom(
-      room,
-      successResponse => {
-        console.log(
-          "%c successResponse ",
-          "background: lime; color: black",
-          successResponse
-        );
-      },
-      errorResponse => {
-        console.log(
-          "%c error",
-          "background: salmon; color: black",
-          errorResponse
-        );
-      }
-    );
+    RoomStore.enterRoom(room);
   }
+  // /**
+  //  * Function for entering Chatrooms
+  //  * @param room
+  //  */
+  // @action
+  // enterRoom(room) {
+  //   // room = room + "@" + ConstantsObject.conferenceServerUrl;
+  //   this.logsArray.push("Connecting to the room " + room);
+  //   console.log(
+  //     "%c this.clientServerConnectionObj.jid, ",
+  //     "background: lime; color: black",
+  //     this.clientServerConnectionObj.jid
+  //   );
+  //   const responseFromInitFunc = this.connection.muc.init(this.connection);
+  //   console.log(
+  //     "%c responseFromInitFunc ",
+  //     "background: lime; color: black",
+  //     responseFromInitFunc
+  //   );
+  //   this.connection.muc.join(
+  //     room,
+  //     this.clientServerConnectionObj.fullId,
+  //     this.roomMsgHandler,
+  //     this.roomPresHandler
+  //   );
+  //   this.connection.muc.createInstantRoom(
+  //     room,
+  //     successResponse => {
+  //       console.log(
+  //         "%c successResponse ",
+  //         "background: lime; color: black",
+  //         successResponse
+  //       );
+  //     },
+  //     errorResponse => {
+  //       console.log(
+  //         "%c error",
+  //         "background: salmon; color: black",
+  //         errorResponse
+  //       );
+  //     }
+  //   );
+  // }
 
-  // Function for Messages and Notifications inside Chatrooms
-  roomMsgHandler = (a, b, c) => {
-    this.logsArray.push("MUC: Subscribed to all Messages inside this Room");
-    console.log(
-      "%c inside roomMsgHandler",
-      "background: lime; color: black",
-      a,
-      b,
-      c
-    );
-    return true;
-  };
-  roomPresHandler = (a, b, c) => {
-    this.logsArray.push(
-      "MUC: Subscribed to all Status-Changes inside this Room"
-    );
-    console.log(
-      "%c inside roomPresHandler",
-      "background: lime; color: black",
-      a,
-      b,
-      c
-    );
-    return true;
-  };
+  // // Function for Messages and Notifications inside Chatrooms
+  // roomMsgHandler = (a, b, c) => {
+  //   this.logsArray.push("MUC: Subscribed to all Messages inside this Room");
+  //   console.log(
+  //     "%c inside roomMsgHandler",
+  //     "background: lime; color: black",
+  //     a,
+  //     b,
+  //     c
+  //   );
+  //   return true;
+  // };
+  // roomPresHandler = (a, b, c) => {
+  //   this.logsArray.push(
+  //     "MUC: Subscribed to all Status-Changes inside this Room"
+  //   );
+  //   console.log(
+  //     "%c inside roomPresHandler",
+  //     "background: lime; color: black",
+  //     a,
+  //     b,
+  //     c
+  //   );
+  //   return true;
+  // };
   exitRoom(room) {
     this.logsArray.push("exitRoom: " + room);
   }

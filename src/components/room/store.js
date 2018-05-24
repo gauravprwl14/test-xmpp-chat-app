@@ -54,9 +54,90 @@ class RoomStore {
     );
   };
 
-  enterRoom(roomObj) {
-    AppStore.enterRoom(roomObj.roomJid);
+  /**
+   * Function for entering Chatrooms
+   * @param room
+   */
+  @action
+  enterRoom(room) {
+    // room = room + "@" + ConstantsObject.conferenceServerUrl;
+    console.log("%c room ", "background: lime; color: black", room);
+    AppStore.logsArray.push("Connecting to the room " + room);
+
+    console.log(
+      "%c this.clientServerConnectionObj.jid, ",
+      "background: lime; color: black",
+      AppStore.clientServerConnectionObj.jid
+    );
+
+    AppStore.connection.muc.join(
+      room,
+      AppStore.clientServerConnectionObj.fullId,
+      this.roomMsgHandler,
+      this.roomPresHandler
+    );
+
+    AppStore.connection.muc.createInstantRoom(
+      room,
+      successResponse => {
+        console.log(
+          "%c successResponse of createInstantRoom",
+          "background: lime; color: black",
+          successResponse
+        );
+      },
+      errorResponse => {
+        console.log(
+          "%c error of createInstantRoom",
+          "background: salmon; color: black",
+          errorResponse
+        );
+      }
+    );
   }
+
+  // Function for Messages and Notifications inside Chatrooms
+  roomMsgHandler = (param1, param2, param3) => {
+    AppStore.logsArray.push("MUC: Subscribed to all Messages inside this Room");
+    console.log(
+      "%c param1 of roomMsgHandler ",
+      "background: lime; color: black",
+      param1
+    );
+    console.log(
+      "%c param2 of roomMsgHandler ",
+      "background: lime; color: black",
+      param2
+    );
+    console.log(
+      "%c param3 of roomMsgHandler ",
+      "background: lime; color: black",
+      param3
+    );
+    return true;
+  };
+
+  roomPresHandler = (param1, param2, param3) => {
+    AppStore.logsArray.push(
+      "MUC: Subscribed to all roomPresHandler inside this Room"
+    );
+    console.log(
+      "%c param1 of roomMsgHandler ",
+      "background: salmon; color: black",
+      param1
+    );
+    console.log(
+      "%c param2 of roomMsgHandler ",
+      "background: salmon; color: black",
+      param2
+    );
+    console.log(
+      "%c param3 of roomMsgHandler ",
+      "background: salmon; color: black",
+      param3
+    );
+    return true;
+  };
 }
 
 export default new RoomStore();

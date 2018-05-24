@@ -6,6 +6,7 @@ class Room extends Component {
   constructor(props) {
     super(props);
     this.getRoomListFromServer = this.getRoomListFromServer.bind(this);
+    this.handleRoomJoining = this.handleRoomJoining.bind(this);
   }
   componentDidMount() {
     RoomStore.getRoomList();
@@ -15,6 +16,12 @@ class Room extends Component {
       e.preventDefault();
     }
     RoomStore.getRoomList();
+  }
+  handleRoomJoining(e, roomObj) {
+    if (e) {
+      e.preventDefault();
+    }
+    RoomStore.enterRoom(roomObj);
   }
   render() {
     return (
@@ -61,7 +68,16 @@ class Room extends Component {
                             <td> {roomObj.roomJid}</td>
                             <td> {roomObj.roomName}</td>
                             <td> {roomObj.members.length}</td>
-                            <td> join</td>
+                            <td>
+                              {" "}
+                              <Button
+                                onClick={e =>
+                                  this.handleRoomJoining(e, roomObj)
+                                }
+                              >
+                                join
+                              </Button>
+                            </td>
                           </tr>
                         );
                       })}

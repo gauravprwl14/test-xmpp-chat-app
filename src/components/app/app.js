@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import RoomComponent from "../room/";
 
 import AppStore from "./store";
-
+import ConstantsObject from "../../utils/constants";
 //styles
 import "./app.scss";
 
@@ -51,7 +51,9 @@ class App extends Component {
   }
   handleChatRoomConnection(e) {
     e.preventDefault();
-    AppStore.enterRoom(AppStore.chatRoomName);
+    const roomJid =
+      AppStore.chatRoomName + "@" + ConstantsObject.conferenceServerUrl;
+    AppStore.enterRoom(roomJid);
   }
   updateSubscriberId(e) {
     e.preventDefault();

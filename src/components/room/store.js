@@ -32,16 +32,16 @@ class RoomStore {
       "background: lime; color: black",
       successResponse
     );
-    const that = this;
+    // const that = this;
     this.roomList = [];
     window
       .$(successResponse)
       .find("item")
-      .each(function() {
-        var jid = window.$(this).attr("jid"); // The jabber_id of the room
-        var roomName = window.$(this).attr("name"); // The roomName
+      .each((index, ele) => {
+        var jid = window.$(ele).attr("jid"); // The jabber_id of the room
+        var roomName = window.$(ele).attr("name"); // The roomName
         const roomObj = new RoomModel(jid, roomName, []);
-        that.roomList.push(roomObj);
+        this.roomList.push(roomObj);
         // You can probably put them in a unordered list and and use their jids as ids.
         AppStore.logsArray.push("jid: " + jid);
       });
@@ -53,6 +53,10 @@ class RoomStore {
       errorResponse
     );
   };
+
+  enterRoom(roomObj) {
+    AppStore.enterRoom(roomObj.roomJid);
+  }
 }
 
 export default new RoomStore();

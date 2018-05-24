@@ -29,7 +29,11 @@ class AppStore {
   @action
   onAppInit() {
     this.connection = new Strophe.Connection(ConstantsObject.boshServerUrl);
-    console.log('%c this.connection object ', 'background: aqua; color: black', this.connection);
+    console.log(
+      "%c this.connection object ",
+      "background: aqua; color: black",
+      this.connection
+    );
     this.connection.rawInput = this.customRawOutputFunc;
     this.connection.rawOutput = this.customRawOutputFunc;
     console.log("this.connection rawInput", this.connection.rawInput);
@@ -199,7 +203,7 @@ class AppStore {
    */
   @action
   enterRoom(room) {
-    room = room + "@" + ConstantsObject.conferenceServerUrl;
+    // room = room + "@" + ConstantsObject.conferenceServerUrl;
     this.logsArray.push("Connecting to the room " + room);
     console.log(
       "%c this.clientServerConnectionObj.jid, ",

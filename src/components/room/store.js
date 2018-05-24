@@ -76,24 +76,6 @@ class RoomStore {
       this.roomMsgHandler,
       this.roomPresHandler
     );
-
-    AppStore.connection.muc.createInstantRoom(
-      room,
-      successResponse => {
-        console.log(
-          "%c successResponse of createInstantRoom",
-          "background: lime; color: black",
-          successResponse
-        );
-      },
-      errorResponse => {
-        console.log(
-          "%c error of createInstantRoom",
-          "background: salmon; color: black",
-          errorResponse
-        );
-      }
-    );
   }
 
   // Function for Messages and Notifications inside Chatrooms
@@ -121,19 +103,45 @@ class RoomStore {
     AppStore.logsArray.push(
       "MUC: Subscribed to all roomPresHandler inside this Room"
     );
+    if (param2 && param2.roster) {
+      const membersList = Object.keys(param2.roster);
+      // if the person whose is join the room is the first person
+      // than room need to be unlock by him.
+      // if room is not unlocked than no other participant will be able to join the room
+      if (membersList.length === 1 && param2.roster[AppStore.connection.jid]) {
+        AppStore.connection.muc.createInstantRoom(
+          param2.name,
+          successResponse => {
+            console.log(
+              "%c successResponse of createInstantRoom",
+              "background: lime; color: black",
+              successResponse
+            );
+          },
+          errorResponse => {
+            console.log(
+              "%c error of createInstantRoom",
+              "background: salmon; color: black",
+              errorResponse
+            );
+          }
+        );
+      }
+    }
+
     console.log(
-      "%c param1 of roomMsgHandler ",
-      "background: salmon; color: black",
+      "%c param1 of roomPresHandler ",
+      "background: aqua; color: black",
       param1
     );
     console.log(
-      "%c param2 of roomMsgHandler ",
-      "background: salmon; color: black",
+      "%c param2 of roomPresHandler ",
+      "background: aqua; color: black",
       param2
     );
     console.log(
-      "%c param3 of roomMsgHandler ",
-      "background: salmon; color: black",
+      "%c param3 of roomPresHandler ",
+      "background: aqua; color: black",
       param3
     );
     return true;

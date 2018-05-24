@@ -109,23 +109,7 @@ class RoomStore {
       // than room need to be unlock by him.
       // if room is not unlocked than no other participant will be able to join the room
       if (membersList.length === 1 && param2.roster[AppStore.connection.jid]) {
-        AppStore.connection.muc.createInstantRoom(
-          param2.name,
-          successResponse => {
-            console.log(
-              "%c successResponse of createInstantRoom",
-              "background: lime; color: black",
-              successResponse
-            );
-          },
-          errorResponse => {
-            console.log(
-              "%c error of createInstantRoom",
-              "background: salmon; color: black",
-              errorResponse
-            );
-          }
-        );
+        this.createRoomInstance(param2.name);
       }
     }
 
@@ -146,6 +130,26 @@ class RoomStore {
     );
     return true;
   };
+
+  createRoomInstance(roomJid) {
+    AppStore.connection.muc.createInstantRoom(
+      roomJid,
+      successResponse => {
+        console.log(
+          "%c successResponse of createInstantRoom",
+          "background: lime; color: black",
+          successResponse
+        );
+      },
+      errorResponse => {
+        console.log(
+          "%c error of createInstantRoom",
+          "background: salmon; color: black",
+          errorResponse
+        );
+      }
+    );
+  }
 }
 
 export default new RoomStore();

@@ -1,5 +1,7 @@
 import { observable, action, toJS } from "mobx";
 import ConstantsObject from "../../utils/constants";
+import { $build, $iq, $msg, $pres, Strophe, $ } from "strophe.js";
+import RoomModel from "../../model/room.model";
 import RoomListFakeData from "../../utils/fakeData/roomList";
 import AppStore from "../app/store";
 
@@ -9,11 +11,12 @@ class RoomStore {
 
   @action
   getRoomList() {
-    this.roomList = [...RoomListFakeData];
+    // this.roomList = [...RoomListFakeData];
     if (AppStore.connection) {
       AppStore.connection.muc.listRooms(
         ConstantsObject.conferenceServerUrl,
-        this.handleListRommSuccessCb
+        this.handleListRoomSuccessCb,
+        this.handleListRoomErrorCb
       );
     }
 
@@ -23,14 +26,27 @@ class RoomStore {
       this.roomList
     );
   }
-  handleListRommSuccessCb = succesResponse => {
+  handleListRoomSuccessCb = successResponse => {
     console.log(
-      "%c succesResponse ",
+      "%c successResponse ",
       "background: lime; color: black",
-      succesResponse
+      successResponse
     );
+    const that = this;
+    this.roomList = [];
+    window
+      .$(successResponse)
+      .find("item")
+      .each(function() {
+        var jid = window.$(this).attr("jid"); // The jabber_id of the room
+        var roomName = window.$(this).attr("name"); // The roomName
+        const roomObj = new RoomModel(jid, roomName, []);
+        that.roomList.push(roomObj);
+        // You can probably put them in a unordered list and and use their jids as ids.
+        AppStore.logsArray.push("jid: " + jid);
+      });
   };
-  handleListRommErrorCb = errorResponse => {
+  handleListRoomErrorCb = errorResponse => {
     console.log(
       "%c errorResponse of list Room ",
       "background: salmon; color: black",

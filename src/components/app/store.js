@@ -1,7 +1,9 @@
 import { observable, action, toJS } from "mobx";
 import { $build, $iq, $msg, $pres, Strophe, $ } from "strophe.js";
-import "strophejs-plugin-muc";
+import abc from "strophejs-plugin-muc";
 import ConstantsObject from "../../utils/constants";
+
+console.log("%c abc or strophe muc  ", "background: aqua; color: black", abc);
 
 class AppStore {
   @observable connection = null;
@@ -27,6 +29,7 @@ class AppStore {
   @action
   onAppInit() {
     this.connection = new Strophe.Connection(ConstantsObject.boshServerUrl);
+    console.log('%c this.connection object ', 'background: aqua; color: black', this.connection);
     this.connection.rawInput = this.customRawOutputFunc;
     this.connection.rawOutput = this.customRawOutputFunc;
     console.log("this.connection rawInput", this.connection.rawInput);

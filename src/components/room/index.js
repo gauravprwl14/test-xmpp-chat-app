@@ -47,6 +47,7 @@ class Room extends Component {
                     <thead>
                       <tr>
                         <td>S.No</td>
+                        <td>Room Jid</td>
                         <td>Room Name</td>
                         <td>Members</td>
                         <td>Join</td>
@@ -58,6 +59,7 @@ class Room extends Component {
                           <tr key={index}>
                             <td> {index + 1}</td>
                             <td> {roomObj.roomJid}</td>
+                            <td> {roomObj.roomName}</td>
                             <td> {roomObj.members.length}</td>
                             <td> join</td>
                           </tr>

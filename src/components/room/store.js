@@ -12,7 +12,7 @@ class RoomStore {
   @observable roomJoinedByUser = {};
 
   @action
-  getRoomList() {
+  async getRoomList() {
     // this.roomList = [...RoomListFakeData];
     if (AppStore.connection) {
       AppStore.connection.muc.listRooms(
@@ -20,6 +20,12 @@ class RoomStore {
         this.handleListRoomSuccessCb,
         this.handleListRoomErrorCb
       );
+      try {
+        const response = await AppStore.commonClassConnectionObj.getRoomList();
+        console.log("%c response from the roomList ", "background: lime; color: black", response);
+      } catch (error) {
+        console.log("%c error  ", "background: salmon; color: black", error);
+      }
     }
 
     console.log(

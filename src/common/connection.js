@@ -3,6 +3,7 @@ import "react-strophejs-plugin-muc";
 import _ from "lodash";
 import Logger from "./logger";
 import ErrorMsg from "./errorMsg";
+import XmlToJson from "./xmlToJson";
 
 class StropheConnection {
   constructor(configObj = {}) {
@@ -136,6 +137,39 @@ class StropheConnection {
       );
     }
     return true;
+  };
+
+  getRoomList() {
+    return new Promise((resolve, reject) => {
+      this.connection.muc.listRooms(
+        this.configObj.hosts.muc,
+        successResponse =>
+          this.handleListRoomSuccessCb(resolve, reject, successResponse),
+        errorResponse =>
+          this.handleListRoomErrorCb(resolve, reject, errorResponse)
+      );
+    });
+  }
+  handleListRoomSuccessCb = (resolve, reject, successResponse) => {
+    let roomList = [];
+    Logger.success("Room List", successResponse);
+    const parsedXml = XmlToJson(successResponse);
+    if (_.get(parsedXml, "query.item", null)) {
+      roomList = parsedXml.query.item.map(roomObj => {
+        const jid = _.get(roomObj, "@attributes.jid", null);
+        const roomName = _.get(roomObj, "@attributes.name", null);
+        const mappedRoomObj = {
+          jid,
+          roomName
+        };
+        return mappedRoomObj;
+      });
+    }
+    resolve(roomList);
+  };
+  handleListRoomErrorCb = (resolve, reject, errorResponse) => {
+    const parsedJson = XmlToJson(errorResponse);
+    reject(parsedJson);
   };
 
   logReceivedXmlData(data) {

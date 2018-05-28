@@ -1,6 +1,6 @@
 import { observable, action, toJS } from "mobx";
-import { $build, $iq, $msg, $pres, Strophe, $ } from "strophe.js";
-import "strophejs-plugin-muc";
+import { $build, $iq, $msg, $pres, Strophe } from "react-strophe";
+import "react-strophejs-plugin-muc";
 
 import RoomStore from "../room/store";
 import ConstantsObject from "../../utils/constants";
@@ -174,7 +174,7 @@ class AppStore {
    */
   onSubscriptionRequest = stanza => {
     if (stanza.getAttribute("type") === "subscribe") {
-      var from = $(stanza).attr("from");
+      var from = window.$(stanza).attr("from");
       this.logsArray.push("onSubscriptionRequest: from=" + from);
       // Send a 'subscribed' notification back to accept the incoming
       // subscription request

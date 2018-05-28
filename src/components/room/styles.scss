@@ -1,0 +1,14 @@
+.chat-msg-container {
+  padding: 10px;
+  border-bottom: 1px solid black;
+}
+
+.self {
+  text-align: right;
+}
+
+.modal-body {
+  min-height: 480px;
+  display: flex;
+  align-items: flex-end;
+}

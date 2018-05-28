@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import { Row, Col, Panel, Button, Table } from "react-bootstrap";
+import ChatRoom from "./chatRoom";
 import RoomStore from "./store";
+import RoomUiStore from "./uiStore";
 
 class Room extends Component {
   constructor(props) {
     super(props);
     this.getRoomListFromServer = this.getRoomListFromServer.bind(this);
     this.handleRoomJoining = this.handleRoomJoining.bind(this);
+    this.handleChat = this.handleChat.bind(this);
   }
   componentDidMount() {
     RoomStore.getRoomList();
@@ -22,6 +25,13 @@ class Room extends Component {
       e.preventDefault();
     }
     RoomStore.enterRoom(roomObj.roomJid);
+  }
+  handleChat(e, roomObj) {
+    if (e) {
+      e.preventDefault();
+    }
+    // RoomUiStore.updateChatModalVisibility(true);
+    RoomStore.sendGroupMessage(roomObj.roomJid, "hello everyone");
   }
   render() {
     return (
@@ -82,9 +92,7 @@ class Room extends Component {
                             <td>
                               {" "}
                               <Button
-                                onClick={e =>
-                                  this.handleRoomJoining(e, roomObj)
-                                }
+                                onClick={e => this.handleChat(e, roomObj)}
                               >
                                 CHAT
                               </Button>
@@ -99,6 +107,7 @@ class Room extends Component {
             </Panel>
           </Col>
         </Row>
+        <ChatRoom />
       </div>
     );
   }

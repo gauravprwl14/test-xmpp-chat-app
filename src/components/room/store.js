@@ -3,11 +3,13 @@ import ConstantsObject from "../../utils/constants";
 import { $build, $iq, $msg, $pres, Strophe, $ } from "strophe.js";
 import RoomModel from "../../model/room.model";
 import RoomListFakeData from "../../utils/fakeData/roomList";
+import xmlToJsonParser from "../../utils/xmlToJson";
 import AppStore from "../app/store";
 
 class RoomStore {
   @observable roomList = [];
   @observable connectionObjectRefAppStore = null;
+  @observable roomJoinedByUser = {};
 
   @action
   getRoomList() {
@@ -96,6 +98,13 @@ class RoomStore {
       "background: lime; color: black",
       param3
     );
+
+    const parsedXmlObj = xmlToJsonParser(param1);
+    console.log(
+      "%c parsed parsedXmlObj",
+      "background: aqua; color: black",
+      parsedXmlObj
+    );
     return true;
   };
 
@@ -127,6 +136,26 @@ class RoomStore {
       "%c param3 of roomPresHandler ",
       "background: aqua; color: black",
       param3
+    );
+    const parsedXmlObj = xmlToJsonParser(param1);
+    console.log(
+      "%c parsed roomPresHandler",
+      "background: aqua; color: black",
+      parsedXmlObj
+    );
+
+    if (!this.roomJoinedByUser[param2.name]) {
+      this.roomJoinedByUser[param2.name] = {
+        roomJid: param2.name,
+        roomMembers: {},
+        msg: []
+      };
+    }
+    this.roomJoinedByUser[param2.name].roomMembers = { ...param2.roster };
+    console.log(
+      "%c this.roomJoinedByUser ",
+      "background: lime; color: black",
+      this.roomJoinedByUser
     );
     return true;
   };

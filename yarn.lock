@@ -6414,6 +6414,14 @@ react-prop-types@^0.4.0:
   dependencies:
     warning "^3.0.0"
 
+react-strophe@^1.2.1-5.2:
+  version "1.2.1-5.2"
+  resolved "https://registry.yarnpkg.com/react-strophe/-/react-strophe-1.2.1-5.2.tgz#dd028f9064cb9f7f3f85431e378a0599ff177c30"
+
+react-strophejs-plugin-muc@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-strophejs-plugin-muc/-/react-strophejs-plugin-muc-1.1.1.tgz#d87075f4efb7718d06f8e1f36e607d4491d4d787"
+
 react-transition-group@^2.0.0, react-transition-group@^2.2.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.3.1.tgz#31d611b33e143a5e0f2d94c348e026a0f3b474b6"
@@ -6846,7 +6854,7 @@ sax@0.5.x:
   version "0.5.8"
   resolved "https://registry.yarnpkg.com/sax/-/sax-0.5.8.tgz#d472db228eb331c2506b0e8c15524adb939d12c1"
 
-sax@^1.2.1, sax@^1.2.4, sax@~1.2.1:
+sax@>=0.6.0, sax@^1.2.1, sax@^1.2.4, sax@~1.2.1:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
 
@@ -7363,7 +7371,7 @@ strophe.js@1.2.15:
   version "1.2.15"
   resolved "https://registry.yarnpkg.com/strophe.js/-/strophe.js-1.2.15.tgz#959878f03a43881eddb8443a8ea77aa3816e9c24"
 
-strophejs-plugin-muc@1.1.0:
+strophejs-plugin-muc@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/strophejs-plugin-muc/-/strophejs-plugin-muc-1.1.0.tgz#dc752eabcb7c3af92f6783c3712016868e7e5e1b"
 
@@ -8175,6 +8183,17 @@ xdg-basedir@^3.0.0:
 xml-name-validator@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/xml-name-validator/-/xml-name-validator-2.0.1.tgz#4d8b8f1eccd3419aa362061becef515e1e559635"
+
+xml2js@0.4.19:
+  version "0.4.19"
+  resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.4.19.tgz#686c20f213209e94abf0d1bcf1efaa291c7827a7"
+  dependencies:
+    sax ">=0.6.0"
+    xmlbuilder "~9.0.1"
+
+xmlbuilder@~9.0.1:
+  version "9.0.7"
+  resolved "https://registry.yarnpkg.com/xmlbuilder/-/xmlbuilder-9.0.7.tgz#132ee63d2ec5565c557e20f4c22df9aca686b10d"
 
 xmlhttprequest-ssl@1.5.3:
   version "1.5.3"

@@ -1,9 +1,12 @@
 import { observable, action, toJS } from "mobx";
 import { $build, $iq, $msg, $pres, Strophe } from "react-strophe";
 import "react-strophejs-plugin-muc";
+import StropheConnection from "../../common/connection";
 
 import RoomStore from "../room/store";
 import ConstantsObject from "../../utils/constants";
+
+import ConnectionClass from "../../common/connection";
 
 class AppStore {
   @observable connection = null;
@@ -25,9 +28,13 @@ class AppStore {
   @observable chatRoomName = "";
 
   @observable logsArray = [];
+  commonClassConnectionObj = null;
 
   @action
   onAppInit() {
+    this.commonClassConnectionObj = new ConnectionClass(
+      ConstantsObject.constantsObjForCommonClass
+    );
     this.connection = new Strophe.Connection(ConstantsObject.boshServerUrl);
     console.log(
       "%c this.connection object ",
@@ -42,12 +49,29 @@ class AppStore {
   }
 
   @action
-  handleServerConnection() {
+  async handleServerConnection() {
     const jidValue = this.clientServerConnectionObj.jid;
     const passValue = this.clientServerConnectionObj.pass;
     this.connection.connect(jidValue, passValue, status =>
       this.onConnectCallBack(status)
     );
+    try {
+      const connectionObjFromCommonClass = this.commonClassConnectionObj.connect(
+        jidValue,
+        passValue
+      );
+      console.log(
+        "%c yes connection established ",
+        "background: lime; color: black",
+        connectionObjFromCommonClass
+      );
+    } catch (error) {
+      console.log(
+        "%c some error inside handleServerConnection ",
+        "background: salmon; color: black",
+        error
+      );
+    }
     // this.connection.connect(jidValue, passValue, this.onConnectCallBack);
   }
   @action

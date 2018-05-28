@@ -13,6 +13,7 @@
     "react-strophejs-plugin-muc": "^1.1.1",
     "strophe.js": "1.2.15",
     "strophejs-plugin-muc": "^1.1.0",
+    "whatwg-fetch": "^2.0.4",
     "xml2js": "0.4.19"
   },
   "scripts": {
